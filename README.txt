@@ -1,4 +1,4 @@
-only sport python2.7
+only support python2.7
 
 
 使用例子
