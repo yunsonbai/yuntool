@@ -1,3 +1,5 @@
+README.txt
+setup.cfg
 setup.py
 songdb/__init__.py
 songdb/error.py
