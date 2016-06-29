@@ -93,6 +93,10 @@ class SqlExpr(object):
         self.where_expr += ' order by {0}'.format('{0}'.format(','.join(rows)))
         return self
 
+    def group_by(self, *rows):
+        self.where_expr += ' group by {0}'.format('{0}'.format(','.join(rows)))
+        return self
+
     def limit(self, *rows):
         '''
         function:
