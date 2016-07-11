@@ -51,7 +51,8 @@ class SqlExpr(object):
         'une': '!=',
         'lte': '<=',
         'gte': '>=',
-        'eq': '='
+        'eq': '=',
+        'in': ' in ',
     }
 
     def __init__(self, model, kwargs):
@@ -59,6 +60,7 @@ class SqlExpr(object):
         self.model = model
         self.params = kwargs.values()
         equations = []
+        i = 0
         for key in kwargs.keys():
             key_spl = key.split('__')
             try:
@@ -66,6 +68,7 @@ class SqlExpr(object):
                     key_spl[-2] + self.operator[key_spl[-1]] + '%s')
             except:
                 equations.append(key_spl[-1] + '=%s')
+            i += 1
         self.where_expr = 'where ' + ' and '.join(
             equations) if len(equations) > 0 else ''
 
@@ -94,7 +97,8 @@ class SqlExpr(object):
         return self
 
     def desc_order_by(self, *rows):
-        self.where_expr += ' order by {0} desc'.format('{0}'.format(','.join(rows)))
+        self.where_expr += ' order by {0} desc'.format(
+            '{0}'.format(','.join(rows)))
         return self
 
     def group_by(self, *rows):
