@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="songdb",
-    version="1.2",
+    version="1.3",
     packages=find_packages(),
     author="yunsonbai",
     author_email='1942893504@qq.com',
