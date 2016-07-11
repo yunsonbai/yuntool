@@ -4,3 +4,4 @@
 .codeintel
 *.log
 songdb.egg-info
+build
