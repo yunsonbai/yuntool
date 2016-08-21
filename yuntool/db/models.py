@@ -1,46 +1,8 @@
 # coding=utf-8
-
-import MySQLdb
 from error import *
-import datetime
-
-
-class Prikey(object):
-    pass
-
-
-class Field(object):
-
-    def __init__(self, *args, **kwargs):
-        for key, val in kwargs.iteritems():
-            if val:
-                val = str(val).replace('"', '\'')
-            setattr(self, key, val)
-
-
-class CharField(Field):
-
-    def __init__(self, default=None):
-        Field.__init__(self, default=default, field_type='CharField')
-        pass
-
-
-class IntegerField(Field):
-
-    def __init__(self, default=None):
-        # msyql既然支持int转换,就用一下吧
-        default = str(default)
-        Field.__init__(self, default=default, field_type='IntegerField')
-        pass
-
-
-class DateTimeField(Field):
-
-    def __init__(self, default=None, auto_now_add=False):
-        if auto_now_add:
-            default = str(datetime.datetime.now())
-        Field.__init__(self, default=default, field_type='DateTimeField')
-        pass
+from field import (
+    Prikey, Field)
+from handler import DbHandler
 
 
 class SqlExpr(object):
@@ -84,12 +46,12 @@ class SqlExpr(object):
 
     def _datas(self, sql):
         try:
-            for row in Database.execute(sql, self.params).fetchall():
+            for row in DbHandler.execute(sql, self.params).fetchall():
                 inst = self.model
                 for idx, f in enumerate(row):
                     setattr(inst, self.model.fields.keys()[idx], f)
                 yield inst
-        except Exception, e:
+        except Exception as e:
             raise e
 
     def order_by(self, *rows):
@@ -156,14 +118,14 @@ class SqlExpr(object):
         sql = self._make_sql()
         try:
             if self.first_line:
-                row = Database.execute(sql, self.params).fetchone()
+                row = DbHandler.execute(sql, self.params).fetchone()
                 inst = self.model
                 for idx, f in enumerate(row):
                     setattr(inst, self.model.fields.keys()[idx], f)
                 return inst
             else:
                 return self._datas(sql)
-        except Exception, e:
+        except Exception as e:
             raise e
 
     def count(self):
@@ -175,7 +137,7 @@ class SqlExpr(object):
         '''
         sql = 'select count(*) from {0} {1};'.format(self.model.db_table,
                                                      self.where_expr)
-        (row_cnt, ) = Database.execute(sql, self.params).fetchone()
+        (row_cnt, ) = DbHandler.execute(sql, self.params).fetchone()
         return row_cnt
 
 
@@ -223,7 +185,7 @@ class Model(object):
             [key + ' = "{0}"'.format(str(
                 kwargs[key]).replace('"', '\'')) for key in kwargs.keys()]),
             where)
-        return Database.execute(sql)
+        return DbHandler.execute(sql)
 
     @classmethod
     def create(self, **kwargs):
@@ -247,7 +209,7 @@ class Model(object):
             self.db_table, ', '.join(kwargs.keys()),
             '","'.join([
                 str(kwargs[key]).replace('"', '\'') for key in kwargs.keys()]))
-        result = Database.execute(sql)
+        result = DbHandler.execute(sql)
         if not result._info:
             setattr(result, 'success', True)
         return result
@@ -262,7 +224,7 @@ class Model(object):
             sql = 'delete from {0} where {1} = {2};'.format(
                 self.db_table, self.pri_field, self.activity_id)
         try:
-            result = Database.execute(sql)
+            result = DbHandler.execute(sql)
             if not result._info:
                 setattr(result, 'success', True)
         except:
@@ -278,40 +240,5 @@ class Model(object):
         return SqlExpr(self, kwargs)
 
 
-class Database(object):
-    autocommit = True
-    conn = None
-
-    @classmethod
-    def connect(cls, **db_config):
-        cls.conn = MySQLdb.connect(host=db_config.get('host', 'localhost'),
-                                   port=db_config.get('port', 3306),
-                                   user=db_config.get('user', 'root'),
-                                   passwd=db_config.get('password', ''),
-                                   db=db_config.get('database', 'test'),
-                                   charset=db_config.get('charset', 'utf8'))
-        cls.conn.autocommit(cls.autocommit)
-
-    @classmethod
-    def get_conn(cls):
-        if not cls.conn or not cls.conn.open:
-            cls.connect()
-        try:
-            cls.conn.ping()
-        except MySQLdb.OperationalError:
-            cls.connect()
-        return cls.conn
-
-    @classmethod
-    def execute(cls, *args):
-        cursor = cls.get_conn().cursor()
-        cursor.execute(*args)
-        return cursor
-
-    def __del__(self):
-        if self.conn and self.conn.open:
-            self.conn.close()
-
-
 def execute_raw_sql(sql, params=None):
-    return Database.execute(sql, params) if params else Database.execute(sql)
+    return DbHandler.execute(sql, params) if params else DbHandler.execute(sql)

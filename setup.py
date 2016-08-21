@@ -2,11 +2,11 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="songdb",
-    version="1.3",
+    name="yuntool",
+    version="0.3",
     packages=find_packages(),
     author="yunsonbai",
     author_email='1942893504@qq.com',
-    url="http://www.baisong.com",
-    description='a orm for mysql operation',
+    url="http://www.yunsonbai.top",
+    description='Tool integration:db data statistics/diagram/email',
 )
