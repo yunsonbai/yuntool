@@ -15,8 +15,17 @@
 
 ## requirements
 ``` bash
-    MySQLdb
+    six==1.10.0
+    openpyxl==2.3.5
+    matplotlib==1.5.2
+    numpy==1.11.1
 ```
+### note
+```bash
+    python2.7需要安装: MySQLdb
+    python3.5需要安装: mysqlclient==1.3.7
+```
+
 # overview
 ## example
 ``` bash
