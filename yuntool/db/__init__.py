@@ -1,4 +1,3 @@
-# coding=utf-8
-from handler import DbHandler
+from yuntool.db.handler import DbHandler
 
-__all__ = ['DbHandler']
+__all__ = ['DbHandler', ]

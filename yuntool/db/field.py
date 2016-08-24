@@ -9,7 +9,7 @@ class Prikey(object):
 class Field(object):
 
     def __init__(self, *args, **kwargs):
-        for key, val in kwargs.iteritems():
+        for key, val in kwargs.items():
             if val:
                 val = str(val).replace('"', '\'')
             setattr(self, key, val)

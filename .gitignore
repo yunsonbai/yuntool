@@ -3,5 +3,8 @@
 *~
 .codeintel
 *.log
-songdb.egg-info
+yuntool.egg-info
 build
+dist
+PKG-INFO
+setup.cfg
