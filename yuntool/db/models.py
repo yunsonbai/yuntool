@@ -10,6 +10,7 @@ from yuntool.db.sql import QuerySet
 class MetaModel(type):
     db_table = None
     fields = {}
+    db_config = None
 
     def __init__(cls, name, bases, attrs):
         super(MetaModel, cls).__init__(name, bases, attrs)
@@ -30,6 +31,10 @@ class MetaModel(type):
         cls.pri_field = pri_field
         cls.attrs = attrs
         cls.objects = cls()
+        if 'meta' in dir(cls):
+            cls.db_table = cls.meta.db_table
+            cls.db_config = cls.meta.db_config
+            DbHandler.connect(**cls.db_config)
 
 
 @six.add_metaclass(MetaModel)

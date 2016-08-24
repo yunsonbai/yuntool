@@ -1,11 +1,11 @@
 # coding=utf-8
-from yuntool.db.handler import DbHandler
+# from yuntool.db.handler import DbHandler
 from yuntool.db.field import CharField
 from yuntool.db.models import Model
 from yuntool.chart.sheet import create_sheet
 from yuntool.chart.plot import draw_curve
 
-db_config = {
+DB_CONFIG = {
     'host': '127.0.0.1',
     'port': 3306,
     'user': 'root',
@@ -16,13 +16,15 @@ db_config = {
 
 
 class TestOrm(Model):
-    db_table = 'what_do'
     title = CharField()
     label = CharField()
 
+    class meta:
+        db_config = DB_CONFIG
+        db_table = 'what_do'
+
 
 def test():
-    DbHandler.connect(**db_config)
     select_term = {
         'type__une': 2,
         # 'type__eq': 100,
@@ -65,7 +67,7 @@ def test():
         [2482, 1890, 2359, 7506, 14561, 14741, 16191]]
     picture = draw_curve(
         x, y, xlabel=['date', 'date'], ylabel=['num', 'num1'])
-    new_f = open('text.jpg', 'wb')
+    new_f = open('text.png', 'wb')
     new_f.write(picture.read())
     new_f.close()
     picture.close()
