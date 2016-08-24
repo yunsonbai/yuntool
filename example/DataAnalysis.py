@@ -47,6 +47,13 @@ def test():
     for r in res_limit:
         # only print the fields that are defined in TestOrm
         print(r.title)
+    # ---------------------
+    print('------------------')
+    res = TestOrm.objects.filter(type__une=2, type=1).data()
+    for r in res:
+        # only print the fields that are defined in TestOrm
+        data.append([r.title, r.label])
+        print(r.title)
 
     title = 'test_sheet'
     hearder_list = ['title', 'label']

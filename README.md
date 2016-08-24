@@ -1,12 +1,16 @@
-# songdb
+# yuntool
 ``` bash
-    采用orm方式操作数据库，方便你日常的数据统计开发
+    在运营统计上可以帮助你很快出结果
+    主要功能:
+        1. 采用orm方式操作数据库，方便你日常的数据统计开发
+        2. 支持画曲线图和制表
+        3. 支持邮件发送(即将添加)
 ```
 
 # introduce
 ## support
 ``` bash
-    python2.7
+    python2.7/3.5
 ```
 
 ## requirements
@@ -16,48 +20,7 @@
 # overview
 ## example
 ``` bash
-    使用例子
-    # coding=utf-8
-    from songdb.models import Database
-    from songdb import models
-    import datetime
-
-    db_config = {
-        'host': '127.0.0.1',
-        'port': 3306,
-        'user': 'user',
-        'password': '',
-        'database': 'test',
-        'charset': 'utf8mb4'
-    }
-
-
-    class TestModel(models.Model):
-        db_table = 'msg'
-        msg = models.CharField()
-        to_user = models.CharField()
-        from_user = models.CharField()
-
-
-    def get_num(send_time_gte):
-        Database.connect(**db_config)
-        select_term = {
-            'type__une': 'name',
-            'send_time__gte': send_time_gte + ' 00:00:00',
-            'send_time__lte': send_time_gte + ' 23:59:59'
-        }
-        print 'total_num:', TestModel.objects.filter(**select_term).count()
-        res = TestModel.objects.filter(**select_term).all().data()
-        # res = TestModel.objects.filter(type='name').all().data()
-        #res = TestModel.objects.filter(
-        #    type=100,
-        #    send_time__gte='2016-05-01 00:00:00',
-        #    from_user_id='yunsonbai@sohu.com').data()
-        users = []
-        for r in res:
-            if r.from_user_id not in users:
-                users.append(r.from_user_id)
-        print 'user_num:', len(users)
+    请看example/DataAnalysis.py
 ```
 
 ## note
@@ -68,6 +31,7 @@
 # model
 ## Field types
 ``` bash
+    Prikey
     CharField
     IntegerField
     DateTimeField
@@ -90,7 +54,7 @@
         field__in = ('one', 'two)
 ```
 
-### selecr function
+### select function
 ``` bash
     limit
     order_by
@@ -102,7 +66,7 @@
 
     note:
         limit 要在 group_by/order_by 后边调用；
-        每次查询语句最后都要调用data才能查询出数据
+        每次查询语句(除去count)最后都要调用data才能查询出数据
     example：
         res = TestModel.objects.filter(**select_term).all().data()
         res = TestModel.objects.filter(**select_term).limit(0, 7).data()
