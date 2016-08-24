@@ -8,37 +8,37 @@
 ```
 
 # introduce
-## support
+### support
 ``` bash
     python2.7/3.5
 ```
 
-## requirements
+### requirements
 ``` bash
     six==1.10.0
     openpyxl==2.3.5
     matplotlib==1.5.2
     numpy==1.11.1
 ```
-### note
+#### note
 ```bash
     python2.7需要安装: MySQLdb
     python3.5需要安装: mysqlclient==1.3.7
 ```
 
 # overview
-## example
+### example
 ``` bash
     请看example/DataAnalysis.py
 ```
 
-## note
+#### note
 ``` bash
     目前不支持自动创建表，所以要使用之前确保表已经存在，在model中定义的字段表中已经存在
 ```
 
 # model
-## Field types
+### Field types
 ``` bash
     Prikey
     CharField
@@ -46,8 +46,8 @@
     DateTimeField
 ```
 
-## select
-### select option
+### select
+#### select option
 ``` bash
     'lt': '<',
     'gt': '>',
@@ -63,7 +63,7 @@
         field__in = ('one', 'two)
 ```
 
-### select function
+#### select function
 ``` bash
     limit
     order_by
@@ -82,7 +82,7 @@
         res = TestModel.objects.filter(**select_term).order_by(id).limit(0, 7).data()
 ```
 
-### note
+#### note
 ``` bash
     支持单条件筛选和多条件筛选，请看例子
     你可以像使用django查询数据库一样去使用，只是要在最后加入data()**
