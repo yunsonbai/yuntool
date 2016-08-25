@@ -5,6 +5,15 @@ import matplotlib.pyplot as plt
 
 
 def draw_curve(x, y, xlabel=[], ylabel=[], title=[], dpi=100, y_num=None):
+    '''
+    parameter:
+        x: X axis data [[], []]
+        y: Y axis data [[], []]
+        xlabel: xlabel [[], []]
+        ylabel: ylabel [[], []]
+        title:  title [[], []]
+        dpi: dpi defualt 100
+    '''
     if not y_num:
         num = len(y)
     else:

@@ -4,6 +4,7 @@ from yuntool.db.field import CharField
 from yuntool.db.models import Model
 from yuntool.chart.sheet import create_sheet
 from yuntool.chart.plot import draw_curve
+from yuntool.email.smtp import send_mail
 
 DB_CONFIG = {
     'host': '127.0.0.1',
@@ -77,6 +78,24 @@ def test():
     new_f = open('text.png', 'wb')
     new_f.write(picture.read())
     new_f.close()
+    picture.close()
+    # test eamil]
+    picture = draw_curve(
+        x, y, xlabel=['date', 'date'], ylabel=['num', 'num1'],
+        title=['test1', 'test2'])
+    # test email
+    from_user = 'xxx@xxx.com'
+    from_user_passwd = 'xxxxxx'
+    mail_server = 'mail.xxx.net'
+    to_users = ['1942893504@qq.com']
+    try:
+        subject = '关于test'.decode('utf-8')
+    except:
+        subject = '关于test'
+    content = '请回复'
+    send_mail(
+        from_user, from_user_passwd, to_users,
+        subject, content, mail_server, picture=picture.getvalue())
     picture.close()
 
 if __name__ == "__main__":
