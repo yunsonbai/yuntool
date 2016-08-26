@@ -5,12 +5,14 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 # from email.MIMEImage import MIMEImage
 from email.mime.image import MIMEImage
+from email.mime.base import MIMEBase
 from email.header import Header
+from email.encoders import encode_base64
 
 
 def send_mail(from_user, from_user_passwd,
               to_users, subject, content, mail_server, picture=None,
-              picture_url=None):
+              picture_url=None, file=None):
     '''
     parameter:
         from_user: 'test@yunson.com'
@@ -26,6 +28,17 @@ def send_mail(from_user, from_user_passwd,
     msg = MIMEMultipart()
     msg['Subject'] = subject
     con = MIMEText('<b>{0}</b>'.format(content), 'html', 'utf-8')
+    if file:
+        contype = 'application/octet-stream'
+        maintype, subtype = contype.split('/', 1)
+        file_msg = MIMEBase(maintype, subtype)
+        file_msg.set_payload(file.read())
+        encode_base64(file_msg)
+        file_msg.add_header(
+            'Content-Disposition',
+            'attachment', filename=file.name)
+        msg.attach(file_msg)
+
     if picture:
         con = MIMEText(
             '<b>{0}</b><img alt="" src="cid:picture" />'.format(
