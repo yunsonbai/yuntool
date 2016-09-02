@@ -1,12 +1,12 @@
 # yuntool
 ## Overview
-* 应用：运营数据统计；快熟查询数据库异常数据；临时性数据筛选/添加/恢复/更新
+* 应用：运营数据统计；快熟查询数据库异常数据；快速数据进行增删改查
 * 版本：0.3
 * 安装：
 	* git clone git@github.com:yunsonbai/yuntool.git
 	* python setup.py install
-* 主要功能:
-	* 采用orm方式操作数据库，方便你日常的数据统计开发
+* 主要功能和特点:
+	* 采用orm方式操作数据库
     * 支持画图
     	* 曲线图
         * 柱形图(即将上线)
