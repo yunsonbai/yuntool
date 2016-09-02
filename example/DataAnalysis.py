@@ -17,6 +17,8 @@ DB_CONFIG = {
 
 
 class TestOrm(Model):
+    # 你可能有多个字段，但是你不用全都定义在这，在这定义的字段都是你要展示的字段
+    # 不在这定义字段并不影响下边的筛选，当然你只能筛选数据表中存在的字段
     title = CharField()
     label = CharField()
 

@@ -1,6 +1,10 @@
 # yuntool
-* 简介：在运营统计上可以帮助你很快出结果
+## Overview
+* 应用：运营数据统计；快熟查询数据库异常数据；临时性数据筛选/添加/恢复/更新
 * 版本：0.3
+* 安装：
+	* git clone git@github.com:yunsonbai/yuntool.git
+	* python setup.py install
 * 主要功能:
 	* 采用orm方式操作数据库，方便你日常的数据统计开发
     * 支持画图
@@ -11,85 +15,110 @@
     	* 纯文字
         * 图加文字
 
+## Requirements
+* 开发语言
+	* python2.7
+	* python3.5
+* 依赖库
+	* python2.7/3.5
+    * six==1.10.0
+    * openpyxl==2.3.5
+    * matplotlib==1.5.2
+    * numpy==1.11.1
+    * smtplib
 
-# introduce
-### support
-``` bash
-    python2.7/3.5
-```
+    ##### Note
+    ```bash
+        python2.7需要安装: MySQLdb
+        python3.5需要安装: mysqlclient==1.3.7
+    ```
 
-### requirements
-``` bash
-    six==1.10.0
-    openpyxl==2.3.5
-    matplotlib==1.5.2
-    numpy==1.11.1
-    smtplib
-```
-#### note
-```bash
-    python2.7需要安装: MySQLdb
-    python3.5需要安装: mysqlclient==1.3.7
-```
-
-# overview
-### example
-``` bash
-    请看example/DataAnalysis.py
-```
+## Quick Start
+ [Test Script](https://github.com/yunsonbai/yuntool/tree/master/example)
 
 #### note
-``` bash
+``` python
     目前不支持自动创建表，所以要使用之前确保表已经存在，在model中定义的字段表中已经存在
 ```
 
-# model
-### Field types
-``` bash
-    Prikey
-    CharField
-    IntegerField
-    DateTimeField
-```
+## Documentation
+* model
+	* Field
+    	* Prikey
+    	* CharField
+    	* IntegerField
+    	* DateTimeField
 
-### select
-#### select option
-``` bash
-    'lt': '<',
-    'gt': '>',
-    'une': '!=',
-    'lte': '<=',
-    'gte': '>=',
-    'eq': '='  #可以不用携带,默认是=
-    'in': 'in'
+	* Filter Data
+		* operator
+    		* lt: '<'
+    		* gt: '>'
+    		* une: '!='
+    		* lte: '<='
+    		* gte: '>='
+    		* eq: '=' (可以不用携带,默认是=)
+    		* in: 'in'
 
-    example：
-        field__lt = 2
-        field__in = ['one', 'two]
-        field__in = ('one', 'two)
-```
+        ###### Note
+        ```python
+            1. operator
+                field__lt = 2
+                field__in = ['one', 'two]
+                field__in = ('one', 'two)
+            2. filter
+                支持单条件或多条件筛选:
+                select_term = {
+                    'type__une': 2,
+                    'send_time__gte': '2015-09-25 00:00:00',
+                }
+                queryset = TestOrm.objects.filter(**select_term)
+                queryset = queryset.filter(user_id='yunsonbai')
+                data = queryset.order_by('id').data()
+        ```
+        * function
+            * limit
+            * order_by
+            * group_by
+            * desc_order_by
+            * first
+            * all
+            * count
 
-#### select function
-``` bash
-    limit
-    order_by
-    group_by
-    desc_order_by
-    first
-    all
-    count
+        ##### Note
+        ```python
+            limit 要在 group_by/order_by 后边调用；
+            每次查询语句(除去count)最后都要调用data才能查询出数据
+        ```
+        ##### Example
+        ```python
+            res = TestModel.objects.filter(**select_term).all().data()
+            res = TestModel.objects.filter(**select_term).limit(0, 7).data()
+            res = TestModel.objects.filter(
+                    **select_term).order_by(id).limit(
+                    0, 7).data()
+        ```
 
-    note:
-        limit 要在 group_by/order_by 后边调用；
-        每次查询语句(除去count)最后都要调用data才能查询出数据
-    example：
-        res = TestModel.objects.filter(**select_term).all().data()
-        res = TestModel.objects.filter(**select_term).limit(0, 7).data()
-        res = TestModel.objects.filter(**select_term).order_by(id).limit(0, 7).data()
-```
+	* Create Data
+	##### Example
+    ```python
+    	即将说明
+    ```
 
-#### note
-``` bash
-    支持单条件筛选和多条件筛选，请看例子
-    你可以像使用django查询数据库一样去使用，只是要在最后加入data()**
-```
+    * Update Data
+    ```python
+        即将说明
+    ```
+
+    * Delete Data
+    ```python
+        即将说明
+    ```
+
+* chart
+	* create_sheet: 制作excel表格
+	* draw_curve: 画曲线图
+
+* email
+	* 发送出文本邮件
+	* 发送图片
+	* 发送附件
