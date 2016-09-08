@@ -22,10 +22,13 @@ class QuerySet(object):
         i = 0
         for key in kwargs.keys():
             key_spl = key.split('__')
+            if key_spl[-1] == 'in' and not kwargs[key]:
+                raise 'operator in need some data'
             try:
                 equations.append(
                     key_spl[-2] + self.operator[key_spl[-1]] + '%s')
             except:
+                print(key_spl[-1])
                 equations.append(key_spl[-1] + '=%s')
             i += 1
         self.where_expr = 'where ' + ' and '.join(
