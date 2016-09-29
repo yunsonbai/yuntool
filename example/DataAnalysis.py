@@ -126,8 +126,8 @@ def test_bar():
         [270, 279, 288, 273, 248, 232, 293],
         [2482, 1890, 2359, 7506, 14561, 14741, 16191]]
     picture = draw_bar(
-        x, y, xlabel=['date', 'date'], ylabel=['num', 'num1'])
-    new_f = open('text.png', 'wb')
+        x, y, xlabel=['date', 'date'], ylabel=['num', 'num1'], merge=True)
+    new_f = open('text_merge.png', 'wb')
     new_f.write(picture.read())
     new_f.close()
     picture.seek(0)
