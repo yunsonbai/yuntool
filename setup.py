@@ -13,7 +13,7 @@ def get_packages(package):
 
 setup(
     name="yuntool",
-    version="0.3",
+    version="0.4",
     packages=get_packages('yuntool'),
     author="yunsonbai",
     author_email='1942893504@qq.com',

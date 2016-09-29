@@ -28,7 +28,6 @@ class QuerySet(object):
                 equations.append(
                     key_spl[-2] + self.operator[key_spl[-1]] + '%s')
             except:
-                print(key_spl[-1])
                 equations.append(key_spl[-1] + '=%s')
             i += 1
         self.where_expr = 'where ' + ' and '.join(
@@ -121,7 +120,7 @@ class QuerySet(object):
                 row = DbHandler.execute(sql, self.params).fetchone()
                 inst = self.model
                 for idx, f in enumerate(row):
-                    setattr(inst, self.model.fields.keys()[idx], f)
+                    setattr(inst, list(self.model.fields.keys())[idx], f)
                 return inst
             else:
                 return self._datas(sql)

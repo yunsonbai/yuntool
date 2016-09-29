@@ -40,24 +40,6 @@ class MetaModel(type):
 @six.add_metaclass(MetaModel)
 class Model(object):
 
-    def update(self, **kwargs):
-        '''
-        function:
-            update data
-        params:
-            dict
-        '''
-        for key, val in kwargs.items():
-            if val is None or key not in self.fields:
-                raise Exception(NORIGHTERROR.format(key))
-        where = 'where {0} = {1}'.format(
-            self.pri_field, self.__dict__[self.pri_field])
-        sql = 'update {0} set {1} {2};'.format(self.db_table, ','.join(
-            [key + ' = "{0}"'.format(str(
-                kwargs[key]).replace('"', '\'')) for key in kwargs.keys()]),
-            where)
-        return DbHandler.execute(sql)
-
     @classmethod
     def create(self, **kwargs):
         '''
@@ -85,15 +67,31 @@ class Model(object):
             setattr(result, 'success', True)
         return result
 
+    def update(self, **kwargs):
+        '''
+        function:
+            update data
+        params:
+            dict
+        '''
+        for key, val in kwargs.items():
+            if val is None or key not in self.fields:
+                raise Exception(NORIGHTERROR.format(key))
+        where = 'where {0} = {1}'.format(
+            self.pri_field, self.__dict__[self.pri_field])
+        sql = 'update {0} set {1} {2};'.format(self.db_table, ','.join(
+            [key + ' = "{0}"'.format(str(
+                kwargs[key]).replace('"', '\'')) for key in kwargs.keys()]),
+            where)
+        return DbHandler.execute(sql)
+
     def delete(self, **kwargs):
-        if kwargs:
-            datas = self.filter(**kwargs).all()
-            where = 'where {0} = {1}'.format(self.pri_field, ' or '.join(
-                [str(data.__dict__[self.pri_field]) for data in datas]))
-            sql = 'delete from {0} {1};'.format(self.db_table, where)
-        else:
-            sql = 'delete from {0} where {1} = {2};'.format(
-                self.db_table, self.pri_field, self.activity_id)
+        for key, val in kwargs.items():
+            if val is None or key not in self.fields:
+                raise Exception(NORIGHTERROR.format(key))
+        where = 'where {0} = {1}'.format(
+            self.pri_field, self.__dict__[self.pri_field])
+        sql = 'delete from {0} {1};'.format(self.db_table, where)
         try:
             result = DbHandler.execute(sql)
             if not result._info:
