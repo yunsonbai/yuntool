@@ -27,7 +27,7 @@ class TestOrm(Model):
         db_table = 'what_do'
 
 
-def test():
+def test_orm():
     select_term = {
         'type__une': 2,
         # 'type__eq': 100,
@@ -65,7 +65,9 @@ def test():
     new_f.write(f.read())
     new_f.close()
     f.close()
-    # test curve
+
+
+def test_curve():
     x = [
         ['2016-06-28', '2016-06-29', '2016-06-30',
          '2016-07-01', '2016-07-02', '2016-07-03', '2016-07-04'
@@ -85,10 +87,15 @@ def test():
     picture = draw_curve(
         x, y, xlabel=['date', 'date'], ylabel=['num', 'num1'],
         title=['test1', 'test2'])
+    return picture
+
+
+def test_email(picture):
     # test email
+    # '192.168.95.66', '26'
     from_user = 'xxx@xxx.com'
     from_user_passwd = 'xxxxxx'
-    mail_server = 'mail.xxx.net'
+    mail_server = '192.168.95.66'
     to_users = ['1942893504@qq.com']
     try:
         subject = '关于test'.decode('utf-8')
@@ -101,4 +108,6 @@ def test():
     picture.close()
 
 if __name__ == "__main__":
-    test()
+    test_orm()
+    picture = test_curve()
+    test_email(picture)
