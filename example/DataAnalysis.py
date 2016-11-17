@@ -108,7 +108,7 @@ def test_curve():
         [2482, 1890, 2359, 7506, 14561, 14741, 16191]]
     picture = draw_curve(
         x, y, xlabel=['date', 'date'], ylabel=['num', 'num1'])
-    new_f = open('text.png', 'wb')
+    new_f = open('text_curve.png', 'wb')
     new_f.write(picture.read())
     new_f.close()
     picture.seek(0)
@@ -159,6 +159,6 @@ if __name__ == "__main__":
     #     test_create_orm(i)
     # test_update_orm()
     # test_delete_orm()
-    # picture = test_curve()
-    picture = test_bar()
+    picture = test_curve()
+    # picture = test_bar()
     # test_email(picture)
