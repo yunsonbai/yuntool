@@ -116,7 +116,8 @@
 
 * chart
 	* create_sheet: 制作excel表格
-	* draw_bar: ![柱形图](/example/text.png "Optional title")
+	* 条形图: {% img  /example/text_curve.png %}
+	* 柱形图: {% img  /example/text.png %}
 
 * email
 	* 发送出文本邮件

@@ -10,7 +10,7 @@ from yuntool.db.sql import QuerySet
 class MetaModel(type):
     db_table = None
     fields = {}
-    db_config = None
+    db_config = {}
 
     def __init__(cls, name, bases, attrs):
         super(MetaModel, cls).__init__(name, bases, attrs)
