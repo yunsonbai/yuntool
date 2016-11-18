@@ -101,25 +101,44 @@
 	* Create Data
 	##### Example
     ```python
-    	即将说明
+    	def test_create_orm(i):
+			create_data = {
+				'label': 1,
+				'title': 'test_{0}'.format(i)
+			}
+			TestOrm.create(**create_data)
     ```
 
     * Update Data
     ```python
-        即将说明
+        def test_update_orm():
+			update_data = {
+				'title': 'hello yunsonbai',
+				'label': 10
+			}
+			res = TestOrm.objects.filter(id__in=[1, 2]).data()
+			for r in res:
+				r.update(**update_data)
+			# or
+			res = TestOrm.objects.filter(id=3).first().data()
+			res.update(**update_data)
     ```
 
     * Delete Data
     ```python
-        即将说明
+        def test_delete_orm():
+			res = TestOrm.objects.filter(id__in=[7, ]).data()
+			for r in res:
+				result = r.delete()
+				print(result)
     ```
 
 * chart
 	* create_sheet: 制作excel表格
-	* 条形图: {% img  /example/text_curve.png %}
-	* 柱形图: {% img  /example/text.png %}
+	* 条形图: ![条形图](/example/text_curve.png)
+	* 柱形图: ![条形图](/example/text.png)
 
 * email
-	* 发送出文本邮件
-	* 发送图片
-	* 发送附件
+	* 发送出文本邮件: 请看example
+	* 发送图片: 请看example
+	* 发送附件: 请看example
