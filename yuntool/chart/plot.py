@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 def draw_curve(
         x, y, xlabel=[], ylabel=[], title=[], dpi=100, y_num=None,
-        xticklabels=[], yticklabels=[]):
+        xticks=[], yticks=[]):
     '''
     parameter:
         x: X axis data [[int], [int]]
@@ -25,9 +25,15 @@ def draw_curve(
     i = 1
     for sub_y in y:
         ax = plt.subplot(num, 1, i)
+        # r_x = np.arange(0, len(x[i - 1]), 1) * 0.0 + x[i - 1]
         r_x = np.arange(0, len(sub_y), 1)
         sub_y = np.arange(0, len(sub_y), 1) * 0.0 + sub_y
+        # sub_y = np.arange(0, len(sub_y), 1)
         ax.plot(r_x, sub_y, 'b-')
+        if xticks:
+            plt.xticks(r_x, xticks[i - 1])
+        if yticks:
+            plt.yticks(sub_y, yticks[i - 1])
         plt.xlabel(xlabel[i - 1])
         plt.ylabel(ylabel[i - 1])
         y_min = sub_y.min()
@@ -37,15 +43,12 @@ def draw_curve(
         plt.title(title[i - 1])
         plt.tight_layout(pad=0.1, h_pad=0, w_pad=0.2, rect=None)
         plt.grid(True)
-        if xticklabels:
-            # xticklabels = [0] + xticklabels
-            ax.set_xticklabels(xticklabels[i - 1], rotation=15)
-        if yticklabels:
-            ax.set_yticklabels(yticklabels[i - 1], rotation=15)
         i += 1
+    # plt.show()
     output = BytesIO()
     plt.savefig(output, dpi=dpi)
     output.seek(0)
+    plt.clf()
     return output
 
 
@@ -106,17 +109,17 @@ def draw_bar(
 
 if __name__ == '__main__':
     x = [
-        ['2016-06-28', '2016-06-29', '2016-06-30',
-         '2016-07-01', '2016-07-02', '2016-07-03', '2016-07-04'
-         ],
-        ['2016-06-28', '2016-06-29', '2016-06-30', '2016-07-01',
-         '2016-07-02', '2016-07-03', '2016-07-04']]
+        ['2016-06-28', '2016-06-29', '2016-06-30'],
+        ['2016-06-28', '2016-06-29', '2016-06-30']]
     y = [
-        [270, 279, 288, 273, 248, 232, 293],
-        [2482, 1890, 2359, 7506, 14561, 14741, 16191]]
+        [270, 200, 288, 270, 200, 288, 270, 200, 288, 270, 200, 288],
+        [2482, 1890, 2359, 2482, 1890, 2359, 2482, 1890, 2359, 2482, 1890, 2359]]
     # picture = draw_curve(
     #     x, y, xlabel=['date', 'date'], ylabel=['num', 'num1'])
-    picture = draw_bar(
-        x, y, xlabel=['date', 'date'], ylabel=['num', 'num1'],
-        merge=True)
+    picture = draw_curve(
+        x, y,
+        # xticklabels=[
+        #     ['a', 'b', 'c', 'e', 'f', 'j', 'a', 'b', 'c', 'e', 'f', 'j'],
+        #     ['a', 'b', 'c', 'e', 'f', 'j', 'a', 'b', 'c', 'e', 'f', 'j']],
+        xlabel=['date', 'date'], ylabel=['num', 'num1'],)
     print(picture)
