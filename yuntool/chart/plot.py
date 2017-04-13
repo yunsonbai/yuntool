@@ -4,11 +4,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def draw_curve(x, y, xlabel=[], ylabel=[], title=[], dpi=100, y_num=None):
+def draw_curve(
+        x, y, xlabel=[], ylabel=[], title=[], dpi=100, y_num=None,
+        xticklabels=[], yticklabels=[]):
     '''
     parameter:
-        x: X axis data [[], []]
-        y: Y axis data [[], []]
+        x: X axis data [[int], [int]]
+        y: Y axis data [[int/float], [int/float]]
         xlabel: xlabel [[], []]
         ylabel: ylabel [[], []]
         title:  title [[], []]
@@ -24,7 +26,7 @@ def draw_curve(x, y, xlabel=[], ylabel=[], title=[], dpi=100, y_num=None):
     for sub_y in y:
         ax = plt.subplot(num, 1, i)
         r_x = np.arange(0, len(sub_y), 1)
-        sub_y = np.arange(0, len(sub_y), 1) * 0 + sub_y
+        sub_y = np.arange(0, len(sub_y), 1) * 0.0 + sub_y
         ax.plot(r_x, sub_y, 'b-')
         plt.xlabel(xlabel[i - 1])
         plt.ylabel(ylabel[i - 1])
@@ -35,7 +37,11 @@ def draw_curve(x, y, xlabel=[], ylabel=[], title=[], dpi=100, y_num=None):
         plt.title(title[i - 1])
         plt.tight_layout(pad=0.1, h_pad=0, w_pad=0.2, rect=None)
         plt.grid(True)
-        ax.set_xticklabels(x[i - 1], rotation=15)
+        if xticklabels:
+            # xticklabels = [0] + xticklabels
+            ax.set_xticklabels(xticklabels[i - 1], rotation=15)
+        if yticklabels:
+            ax.set_yticklabels(yticklabels[i - 1], rotation=15)
         i += 1
     output = BytesIO()
     plt.savefig(output, dpi=dpi)
