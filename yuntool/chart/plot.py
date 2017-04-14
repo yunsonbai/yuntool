@@ -1,4 +1,5 @@
 # coding=utf-8
+import sys
 from io import BytesIO
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,7 +7,7 @@ import matplotlib.pyplot as plt
 
 def draw_curve(
         x, y, xlabel=[], ylabel=[], title=[], dpi=100, y_num=None,
-        xticks=[], yticks=[]):
+        xticks=[], yticks=[], draw_one=False, label=[]):
     '''
     parameter:
         x: X axis data [[int], [int]]
@@ -23,28 +24,45 @@ def draw_curve(
     if not title:
         title = range(num)
     i = 1
+    tmp = 0
+    y_min = sys.maxsize
+    y_max = -1 * sys.maxsize
     for sub_y in y:
-        ax = plt.subplot(num, 1, i)
-        # r_x = np.arange(0, len(x[i - 1]), 1) * 0.0 + x[i - 1]
+        if not draw_one:
+            ax = plt.subplot(num, 1, i)
+        else:
+            ax = plt.subplot(111)
         r_x = np.arange(0, len(sub_y), 1)
         sub_y = np.arange(0, len(sub_y), 1) * 0.0 + sub_y
-        # sub_y = np.arange(0, len(sub_y), 1)
-        ax.plot(r_x, sub_y, 'b-')
+        if label:
+            ax.plot(r_x, sub_y, label=label[i - 1])
+        else:
+            ax.plot(r_x, sub_y)
+        plt.xlabel(xlabel[i - 1])
+        plt.ylabel(ylabel[i - 1])
         if xticks:
             plt.xticks(r_x, xticks[i - 1])
         if yticks:
             plt.yticks(sub_y, yticks[i - 1])
-        plt.xlabel(xlabel[i - 1])
-        plt.ylabel(ylabel[i - 1])
-        y_min = sub_y.min()
-        y_max = sub_y.max()
+        if not draw_one:
+            y_min = sub_y.min()
+            y_max = sub_y.max()
+        else:
+            tmp = y_min
+            y_min = sub_y.min()
+            if tmp < y_min:
+                y_min = tmp
+
+            tmp = y_max
+            y_max = sub_y.max()
+            if tmp > y_max:
+                y_max = tmp
         diff = y_max - y_min
         plt.ylim(y_min - diff, y_max + diff)
         plt.title(title[i - 1])
-        plt.tight_layout(pad=0.1, h_pad=0, w_pad=0.2, rect=None)
         plt.grid(True)
         i += 1
-    # plt.show()
+    plt.legend(bbox_to_anchor=(0.1, 1), loc=2, borderaxespad=0)
     output = BytesIO()
     plt.savefig(output, dpi=dpi)
     output.seek(0)
@@ -121,5 +139,6 @@ if __name__ == '__main__':
         # xticklabels=[
         #     ['a', 'b', 'c', 'e', 'f', 'j', 'a', 'b', 'c', 'e', 'f', 'j'],
         #     ['a', 'b', 'c', 'e', 'f', 'j', 'a', 'b', 'c', 'e', 'f', 'j']],
-        xlabel=['date', 'date'], ylabel=['num', 'num1'],)
+        xlabel=['date', 'date'], ylabel=['num', 'num1'], draw_one=True,
+        label=['1', '2'])
     print(picture)
