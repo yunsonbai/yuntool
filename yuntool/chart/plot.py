@@ -38,10 +38,10 @@ def draw_curve(
             ax.plot(r_x, sub_y, label=label[i - 1])
         else:
             ax.plot(r_x, sub_y)
-        plt.xlabel(xlabel[i - 1])
+        plt.xlabel(xlabel[i - 1], verticalalignment='baseline')
         plt.ylabel(ylabel[i - 1])
         if xticks:
-            plt.xticks(r_x, xticks[i - 1])
+            plt.xticks(r_x, xticks[i - 1], rotation=15)
         if yticks:
             plt.yticks(sub_y, yticks[i - 1])
         if not draw_one:
