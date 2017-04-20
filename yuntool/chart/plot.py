@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 def draw_curve(
         x, y, xlabel=[], ylabel=[], title=[], dpi=100, y_num=None,
-        xticks=[], yticks=[], draw_one=False, label=[]):
+        xticks=[], yticks=[], draw_one=False, label=[], stretch=5):
     '''
     parameter:
         x: X axis data [[int], [int]]
@@ -57,7 +57,7 @@ def draw_curve(
             y_max = sub_y.max()
             if tmp > y_max:
                 y_max = tmp
-        diff = y_max - y_min
+        diff = (y_max - y_min) / stretch
         plt.ylim(y_min - diff, y_max + diff)
         plt.title(title[i - 1])
         plt.grid(True)
