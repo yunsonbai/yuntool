@@ -29,7 +29,6 @@ def send_mail(from_user, from_user_passwd,
     msg = MIMEMultipart()
     msg['Subject'] = subject
     con = MIMEText('<b>{0}</b>'.format(content), 'html', 'utf-8')
-    msg.attach(con)
     if file:
         contype = 'application/octet-stream'
         maintype, subtype = contype.split('/', 1)

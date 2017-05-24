@@ -119,6 +119,8 @@ class QuerySet(object):
             if self.first_line:
                 row = DbHandler.execute(sql, self.params).fetchone()
                 inst = self.model
+                if not row:
+                    return row
                 for idx, f in enumerate(row):
                     setattr(inst, list(self.model.fields.keys())[idx], f)
                 return inst
