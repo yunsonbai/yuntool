@@ -53,7 +53,7 @@ def send_mail(from_user, from_user_passwd,
             '<b>{0}</b><img alt="" src="{1}" />'.format(
                 content, picture_url), 'html', 'utf-8')
         msg.attach(con)
-    server = smtplib.SMTP(mail_server, '25')
+    server = smtplib.SMTP(mail_server, mail_server_port)
     if login:
         server.login(from_user, from_user_passwd)
     msg['From'] = Header(from_user)
