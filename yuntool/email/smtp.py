@@ -13,7 +13,7 @@ from email.encoders import encode_base64
 def send_mail(from_user, from_user_passwd,
               to_users, subject, content, mail_server,
               mail_server_port='25', picture=None,
-              picture_url=None, file=None):
+              picture_url=None, file=None, login=False):
     '''
     parameter:
         from_user: 'test@yunson.com'
@@ -54,7 +54,8 @@ def send_mail(from_user, from_user_passwd,
                 content, picture_url), 'html', 'utf-8')
         msg.attach(con)
     server = smtplib.SMTP(mail_server, '25')
-    # server.login(from_user, from_user_passwd)
+    if login:
+        server.login(from_user, from_user_passwd)
     msg['From'] = Header(from_user)
     str_to_users = ','.join(to_users)
     msg['To'] = Header(str_to_users)
