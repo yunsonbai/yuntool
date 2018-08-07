@@ -8,13 +8,17 @@ class DbHandler(object):
 
     @classmethod
     def connect(cls, **db_config):
+        autocommit = db_config.get("autocommit", True)
+        database = db_config.get('database', 'test')
         cls.conn = MySQLdb.connect(host=db_config.get('host', 'localhost'),
                                    port=db_config.get('port', 3306),
                                    user=db_config.get('user', 'root'),
                                    passwd=db_config.get('password', ''),
-                                   db=db_config.get('database', 'test'),
-                                   charset=db_config.get('charset', 'utf8'))
-        cls.conn.autocommit(cls.autocommit)
+                                   db=database,
+                                   charset=db_config.get('charset', 'utf8'),
+                                   autocommit=autocommit
+                                   )
+        cls.conn.select_db(database)
 
     @classmethod
     def get_conn(cls):
