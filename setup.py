@@ -11,9 +11,10 @@ def get_packages(package):
             for dirpath, dirnames, filenames in os.walk(package)
             if os.path.exists(os.path.join(dirpath, '__init__.py'))]
 
+
 setup(
     name="yuntool",
-    version="0.4.1",
+    version="0.4.2",
     packages=get_packages('yuntool'),
     author="yunsonbai",
     author_email='1942893504@qq.com',
